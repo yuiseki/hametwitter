@@ -1,0 +1,17 @@
+<div style="background:#f5f5f5;padding:2px;font-weight:bold;">
+
+<%= link_to image_tag("http://assets0.twitter.com/images/twitter_logo_header.png", :size => "80x15"), "/" %>
+|
+<%= "現在 " + Time.now.strftime("%H:%M:%S") %>
+|
+<%= "最終アクセス " + @last_visited.strftime("%H:%M:%S") %>
+(<%= (Time.now - @last_visited ).to_s + "秒前" %>)
+|
+<%= "表示 " + @statuses.size.inspect + "件" %>
+|
+<%= "DB " + Status.count.inspect + "件" %>
+|
+
+</div>
+
+<hr style="clear:both;"/>

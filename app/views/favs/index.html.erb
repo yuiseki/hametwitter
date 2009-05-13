@@ -1,0 +1,27 @@
+<%= Time.now %>
+<br />
+<br />
+<% @users.each do |user| %>
+  <% name = user.screen_name %>
+  <% size = user.count %>
+  <%= image_tag("http://usericons.relucks.org/twitter/#{name}",
+                :size => "#{size}x#{size}"
+               ) %>
+  <%= size %>
+  <%= name %>
+<% end %>
+<br />
+<hr />
+
+<% for status in @statuses %>
+    <%#=h status.status_id %>
+    <%= image_tag(
+        "http://usericons.relucks.org/twitter/"+h(status.screen_name),
+        :size => "30x30"
+        #:alt => h(status.screen_name)
+        ) %>
+    <%=h status.screen_name %>
+    |
+    <%= filter(status.text) %>
+    <br />
+<% end %>

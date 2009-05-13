@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  status_id: 1
+  screen_name: MyString
+  text: MyText
+
+two:
+  status_id: 1
+  screen_name: MyString
+  text: MyText

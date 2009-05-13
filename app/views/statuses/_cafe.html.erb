@@ -1,0 +1,28 @@
+<% if @cafes %>
+<% for cafe in @cafes %>
+    <% time = (Time.now.strftime("%H%M%S").to_i - cafe.created_at.strftime("%H%M%S").to_i ).to_s + "秒前" %>
+    <% user = h(cafe.screen_name) %>
+    <% id = cafe.status_id %>
+    <% times = Fav.find(:all, :conditions => ["screen_name = ?", user]).size.to_i + 1 %>
+    <div style="line-height:1em; background-color:#F5F5F5; font-size:0.8em;
+      border:1px solid black; margin:1px; padding:3px;
+      float:left; width:160px; height:80px; color:black;">
+    <div class="user" id="#{id}" style="float:left;">
+    <%= image_tag(
+        "http://usericons.relucks.org/twitter/#{user}",
+        :size => "24x24",
+        :alt => user,
+        :title => user
+      ) %>
+    </div>
+    <span class="status" style="font-size:1em;">
+      <%= filter(cafe.text) %>
+    </span>
+      (<%= user + "/" + link_to(time, "http://twitter.com/#{user}/status/#{id}") %>)
+    </div>
+<% end %>
+<div style="clear:both;text-align:right;">
+      <%= link_to("<span style='font-size:2em;background:silver;color:blue;'>もっとみる</span>", "/akiba") %>
+</div>
+
+<% end %>
