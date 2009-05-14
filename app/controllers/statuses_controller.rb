@@ -1,12 +1,16 @@
 class StatusesController < ApplicationController
+  caches_page :index, :more, :shachiku, :akiba, :doro, :events
+
   WORDS = %w[%yuiseki% %リナカフェ% %ニコカフェ% %秘密カフェ% %アキバ% %秋葉原% %ねとすた% %ねっとすたー% %UDX% %モス% %ティア%]
 
   AKIBA = %w[%yuiseki% %ゆいせき% %arduino% %セミナー% %ホコ天% %リナカフェ% %秘密カフェ% %神田% %神輿% %アキバ% %あきば% %秋月% %千石% %マルツ% %おでん缶% %クレバリー% %アキヨド% %秋葉原% %UDX% %LAOX% %ダイビル% %ソフマ% %中央通% %昭和通% %末広町% %岩本町% %万世橋% %三月兎% %電気街%]
   SHIBUYA = %w[%渋谷% %表参道% %原宿% %ハチ公% %センター街%]
   HENTAI = %w[%女装% %男の娘% %hentai% %変態%]
+  SHACHIKU = %w[%作業% %疲% %飽% %上司% %部下% %出社% %退社% %クビ% %勤% %労% %働% %辞% %徹夜% %仕事%]
   EVENTS = %w[%ドロリッチ% %セミナー% %arduino% %祭% %焼肉% %イベント% %ティア% %文学フリマ%]
   DORO = %w[%ドロリッチ%]
   USERS = %w[yuiseki akio0911 takano23 ksasao nyatla voqn]
+
 
   def ust
     set_time
@@ -101,6 +105,21 @@ class StatusesController < ApplicationController
     render :action => "index"
   end
 
+  def shachiku
+    set_time
+    set_buzz
+    @words = SHACHIKU.dup
+    @words.map! {|w| w[1..-2] }
+    @statuses = Status.find(:all, :limit => 200, :conditions => [like_cond(SHACHIKU), SHACHIKU].flatten!, :order=>"created_at DESC" )
+    @statuses.each do |status|
+      user = Priv.find_by_screen_name(status.screen_name)
+      if user
+        @statuses.delete(status) if user.flag
+      end
+    end
+    render :action => "index"
+  end
+
   def hentai
     set_time
     set_buzz
@@ -151,7 +170,7 @@ class StatusesController < ApplicationController
     set_buzz
     @words = AKIBA.dup
     @words.map! {|w| w[1..-2] }
-    @statuses = Status.find(:all, :limit => 50, :conditions => [like_cond(AKIBA), AKIBA].flatten!, :order=>"created_at DESC" )
+    @statuses = Status.find(:all, :limit => 150, :conditions => [like_cond(AKIBA), AKIBA].flatten!, :order=>"created_at DESC" )
     @statuses.each do |status|
       user = Priv.find_by_screen_name(status.screen_name)
       if user
